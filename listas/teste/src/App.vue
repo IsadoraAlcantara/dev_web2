@@ -17,7 +17,7 @@
 <template>
   <div>  
   <button @click="adicionar">Adicionar</button>
-  <br>
+  <hr>
   <button @click="remover(index)">Remover</button>
 </div>
   <input type="text" v-model="novoItem">
@@ -26,6 +26,7 @@
     <li v-for="(item, i) in listaCompras" :key="i"> {{ item }}</li>
   </ul>
 </template>
+
 <style scoped>
 button {
     border: none;
@@ -49,4 +50,5 @@ input {
   background-color: #F2F0EB;
   width: 220px;
 }
+
 </style>
