@@ -24,58 +24,7 @@ function confirma() {
 </script>
 
 <template>
-  <div class="container">
-    <h2>Formulário</h2>
-  <form @submit.prevent="confirmacao = confirma()">
-    <input type="text" placeholder="nome" v-model="nome" minlength="3" required/>
-    <p></p><input type="email" placeholder="email"  v-model="email" required/>
-    <p></p><input type="password" placeholder="senha"  v-model="senha" />
-    <p></p><input type="password" placeholder="senha de confirmação"  v-model="senhaConfir" />
-    <p></p><input type="date" placeholder="data de nascimento"  v-model="nascimento" />
-    <p></p><input type="text" placeholder="endereço" v-model="endereco" />
-    <p></p><input type="text" placeholder="cidade" v-model="cidade" />
-    <select v-model="estado">
-      <option value="" disabled>Estado</option>
-      <option value="AC">Acre</option>
-      <option value="AL">Alagoas</option>
-      <option value="AP">Amapá</option>
-      <option value="AM">Amazonas</option>
-      <option value="BA">Bahia</option>
-      <option value="CE">Ceará</option>
-      <option value="DF">Distrito Federal</option>
-      <option value="ES">Espírito Santo</option>
-      <option value="GO">Goiás</option>
-      <option value="MA">Maranhão</option>
-      <option value="MS">Mato Grosso</option>
-      <option value="MS">Mato Grosso do Sul</option>
-      <option value="MG">Minas Gerais</option>
-      <option value="PA">Pará</option>
-      <option value="PB">Paraíba</option>
-      <option value="PR">Paraná </option>
-      <option value="PE">Pernambuco</option>
-      <option value="PI">Piauí</option>
-      <option value="RJ">Rio de Janeiro</option>
-      <option value="RN">Rio Grande do Norte</option>
-      <option value="RS">Rio Grande do Sul </option>
-      <option value="RO">Rondônia</option>
-      <option value="RR">Roraima</option>
-      <option value="SC">Santa Catarina </option>
-      <option value="SP">São Paulo</option>
-      <option value="SE">Sergipe</option>
-      <option value="TO">Tocantins</option>
-    </select>
-  
-    <textarea placeholder="hobbies" v-model="hobbies" />
-    <p style="white-space: pre-line;"></p>
 
-    <textarea placeholder="biografia" v-model="biografia" />
-    <p style="white-space: pre-line;"></p>
-
-    <textarea placeholder="linguagens de programação" v-model="linguagem" />
-    <p style="white-space: pre-line;"></p>
-
-    <button type="submit" class="botao">enviar</button>
-  </form>
 
 </div>
 <div class="final" v-if="confirmacao">
