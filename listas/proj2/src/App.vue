@@ -14,7 +14,7 @@ const produtos = ref([
     nome: 'Camiseta',
     preco: 49.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png"
+    imagem: "https://assets.stickpng.com/images/580b57fbd9996e24bc43bf78.png"
   },
   {
     id: 2,
@@ -111,9 +111,9 @@ function total() {
   }
 }
 
-function diminuir(idProd) {
-  if (produtos.value[idProd].quantidade > 0) {
-    produtos.value[idProd].quantidade--;
+function diminuir(id) {
+  if (produtos.value[id].quantidade > 0) {
+    produtos.value[id].quantidade--;
   }
 }
 
@@ -141,7 +141,7 @@ function removerCarrinho(index) {
 
     <li class="produtos-item" v-for="(produto, index) in produtos" :key="index">
       <div>
-        <p>Imagem: {{ produto.imagem }}</p>
+        <img src=produto.imagem alt="">
       </div>
       <div>
         <p>Nome: {{ produto.nome }}</p>
@@ -154,12 +154,12 @@ function removerCarrinho(index) {
       </div>
       <p v-for="(produto, key) in produtos" :key="key">{{ produto.key }}</p>
       <div class="bt">
-        <button class="btProd" @click="produto.quantidade++">+</button>
+        <button class="btMaisMenos" @click="produto.quantidade++">+</button>
         <p>{{ produto.quantidade }}</p>
-        <button class="btProd" @click="diminuir">-</button>
+        <button class="btMaisMenos" @click="diminuir(produto.id - 1)">-</button>
       </div>
       <div>
-        <button class="btCarrinho" @click="adicionarCarrinho(index)">Adicionar ao carrinho</button>
+        <button class="btCarrinho" @click="adicionarCarrinho(index)">Adicionar</button>
       </div>
     </li>
   </ul>
@@ -170,6 +170,7 @@ function removerCarrinho(index) {
             <p>Nome: {{ item.nome }}</p>
             <p>Preço: R$:{{ item.preco }}</p>
             <p>Quantidade: {{ item.quantidade }}</p>
+            <button class="" @click="removerCarrinho">Remover</button>
         </div>
         <button @click="total" class="botao">Somar produtos</button>
         <p>{{ valorTotal }}</p>
@@ -191,7 +192,7 @@ function removerCarrinho(index) {
 
 .container {
   font-size: 18px;
-  background-color: #253b35;
+  background-color: #E8E9E4;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -210,20 +211,20 @@ li {
 
 .produtos-main {
   color: black;
-  ;
   padding: 0 30px;
-  width: 700px;
+  width: 900px;
   height: min-content;
   align-items: center;
   font-size: 18px;
   background-color: #E8E9E4;
   top: 50%;
-  left: 50%;
+  left: 30%;
   transform: translate(-50%, -50%);
   padding: 80px;
   border-radius: 15px;
   box-shadow: 0px 10px 40px #00000056;
   color: black;
+  margin: 10px 5px;
 }
 
 .bt {
@@ -236,15 +237,25 @@ li {
   border-radius: 20px;
 }
 
-.btProd {
+.btMaisMenos {
   background: transparent;
   border: 0;
   align-items: center;
   padding: 0 10px;
+  font-weight: bold;
+  margin: 10px 5px;
 }
 
 .btCarrinho {
-  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 7px 20px;
+  background-color: ccc;
+  color: black;
+  margin: 10px 5px;
+  width: 220px;
 }
 
 h2 {
@@ -261,4 +272,17 @@ h2 {
   border-radius: 8px;
   box-shadow: 0 4px 18px #2a2f430f;
   justify-content: space-around;
-}</style>
+}
+
+.item {
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 7px 20px;
+  background-color: #595c48;
+  color: aliceblue;
+  margin: 5px;
+  width: 220px;
+}
+</style>
