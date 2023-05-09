@@ -1,76 +1,83 @@
 <script setup>
 import { ref } from 'vue'
 
+const novoItem = ref({
+    id: 0,
+    nome: '',
+    preco: 0,
+    quantidade: 1,
+})
+
 const produtos = ref([
   {
     id: 1,
     nome: 'Camiseta',
     preco: 49.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 2,
     nome: 'Calça',
     preco: 99.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 3,
     nome: 'Meia',
     preco: 9.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 4,
     nome: 'Sapato',
     preco: 199.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 5,
     nome: 'Boné',
     preco: 29.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 6,
     nome: 'Óculos',
     preco: 99.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 7,
     nome: 'Relógio',
     preco: 299.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 8,
     nome: 'Bermuda',
     preco: 79.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 9,
     nome: 'Cueca',
     preco: 19.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
   {
     id: 10,
     nome: 'Meia',
     preco: 9.9,
     quantidade: 0,
-    imagem: "imagens/camiseta.png" 
+    imagem: "imagens/camiseta.png"
   },
 ])
 
@@ -106,16 +113,25 @@ function total() {
 
 function diminuir(idProd) {
   if (produtos.value[idProd].quantidade > 0) {
-    produtos.value[idProd].quantidade--
+    produtos.value[idProd].quantidade--;
   }
 }
 
-function adicionarCarrinho() {
-  carrinho.value.push(produtos.value)
-  carrinho.value = ''
+function adicionarCarrinho(index) {
+  if (produtos.value[index].quantidade > 0) {
+    novoItem.value.id = produtos.value[index].id;
+    novoItem.value.nome = produtos.value[index].nome;
+    novoItem.value.preco = produtos.value[index].preco;
+    novoItem.value.quantidade = produtos.value[index].quantidade;
+    carrinho.value.push({ ...novoItem.value });
+  }
+  else {
+    alert("Selecione a quantidade do produto desejado")
+  }
+
 }
 
-function removerCarrinho(key) {
+function removerCarrinho(index) {
   carrinho.value.splice(index, 1)
 }
 </script>
@@ -124,18 +140,41 @@ function removerCarrinho(key) {
     <h2>Produtos</h2>
 
     <li class="produtos-item" v-for="(produto, index) in produtos" :key="index">
-        <div><p>Imagem: {{ produto.imagem }}</p></div>
-        <div><p>Nome: {{ produto.nome }}</p></div>
-        <div><p>Preço: R$:{{ produto.preco }}</p></div>
-        <div><p>Valor Total: R$:{{ produto.valorTotal }}</p></div>
+      <div>
+        <p>Imagem: {{ produto.imagem }}</p>
+      </div>
+      <div>
+        <p>Nome: {{ produto.nome }}</p>
+      </div>
+      <div>
+        <p>Preço: R$:{{ produto.preco }}</p>
+      </div>
+      <div>
+        <p>Valor Total: R$:{{ produto.valorTotal }}</p>
+      </div>
       <p v-for="(produto, key) in produtos" :key="key">{{ produto.key }}</p>
       <div class="bt">
-        <button class="bt-prod" @click="produto.quantidade++">+</button>
-      <p>{{ produto.quantidade }}</p>
-      <button class="bt-prod" @click="diminuir">-</button>
+        <button class="btProd" @click="produto.quantidade++">+</button>
+        <p>{{ produto.quantidade }}</p>
+        <button class="btProd" @click="diminuir">-</button>
+      </div>
+      <div>
+        <button class="btCarrinho" @click="adicionarCarrinho(index)">Adicionar ao carrinho</button>
       </div>
     </li>
   </ul>
+
+  <div class="container">
+        <h2>Carrinho</h2>
+        <div class="item" v-for="(item, index) in carrinho" :key="index">
+            <p>Nome: {{ item.nome }}</p>
+            <p>Preço: R$:{{ item.preco }}</p>
+            <p>Quantidade: {{ item.quantidade }}</p>
+        </div>
+        <button @click="total" class="botao">Somar produtos</button>
+        <p>{{ valorTotal }}</p>
+            <button type="submit" class="botao">finalizar compra</button>
+    </div>
 </template>
 <style scoped>
 .botao {
@@ -149,6 +188,7 @@ function removerCarrinho(key) {
   margin: 5px;
   width: 220px;
 }
+
 .container {
   font-size: 18px;
   background-color: #253b35;
@@ -169,7 +209,8 @@ li {
 }
 
 .produtos-main {
-  color: black;;
+  color: black;
+  ;
   padding: 0 30px;
   width: 700px;
   height: min-content;
@@ -193,13 +234,17 @@ li {
   justify-content: space-around;
   min-width: 60px;
   border-radius: 20px;
+}
 
-  .bt-prod {
-    background: transparent;
-    border: 0;
-    align-items: center;
-    padding: 0 10px;
-  }
+.btProd {
+  background: transparent;
+  border: 0;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.btCarrinho {
+  margin: 10px;
 }
 
 h2 {
@@ -209,13 +254,11 @@ h2 {
 }
 
 .produtos-main .produtos-item {
-    background-color: white;
-    position: relative;
-    width: 100%;
-    margin: 30px 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 18px #2a2f430f;
-    justify-content: space-around;
-}
-
-</style>
+  background-color: white;
+  position: relative;
+  width: 100%;
+  margin: 30px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 18px #2a2f430f;
+  justify-content: space-around;
+}</style>
