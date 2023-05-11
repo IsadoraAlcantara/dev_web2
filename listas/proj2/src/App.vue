@@ -139,6 +139,30 @@ function removerCarrinho(index) {
   <ul class="produtos-main">
     <h2>Produtos</h2>
 
+    <div class="descricao">
+      <section>
+        <table>
+          <thead>
+            <tr>
+              <th>Protudo</th>
+              <th>Preço</th>
+              <th>Valor total</th>
+              <th>Quantidade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <td></td>
+            <td>R$:49.9</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tbody>
+        </table>
+      </section>
+
+
+    </div>
+
     <li class="produtos-item" v-for="(produto, index) in produtos" :key="index">
       <div>
         <img src=produto.imagem alt="">
@@ -164,18 +188,30 @@ function removerCarrinho(index) {
     </li>
   </ul>
 
-  <div class="container">
-        <h2>Carrinho</h2>
-        <div class="item" v-for="(item, index) in carrinho" :key="index">
-            <p>Nome: {{ item.nome }}</p>
-            <p>Preço: R$:{{ item.preco }}</p>
-            <p>Quantidade: {{ item.quantidade }}</p>
-            <button class="" @click="removerCarrinho">Remover</button>
-        </div>
-        <button @click="total" class="botao">Somar produtos</button>
-        <p>{{ valorTotal }}</p>
-            <button type="submit" class="botao">finalizar compra</button>
-    </div>
+  <ul class="carrinho">
+    <h2>Carrinho</h2>
+
+    <li class="item" v-for="(produto, index) in carrinho" :key="index">
+      <div>
+        <img src=produto.imagem alt="">
+      </div>
+      <div>
+        <p>Nome: {{ produto.nome }}</p>
+      </div>
+      <div>
+        <p>Preço: R$:{{ produto.preco }}</p>
+      </div>
+      <div>
+        <p>Valor Total: R$:{{ produto.valorTotal }}</p>
+      </div>
+      <p v-for="(produto, key) in produtos" :key="key">{{ produto.key }}</p>
+      <div>
+        <button class="btCarrinho" @click="remover(index)">Remover</button>
+      </div>
+    </li>
+  </ul>
+
+
 </template>
 <style scoped>
 .botao {
@@ -190,7 +226,7 @@ function removerCarrinho(index) {
   width: 220px;
 }
 
-.container {
+.carrinho {
   font-size: 18px;
   background-color: #E8E9E4;
   top: 50%;
@@ -199,7 +235,8 @@ function removerCarrinho(index) {
   padding: 80px;
   border-radius: 15px;
   box-shadow: 0px 10px 40px #00000056;
-  width: 400px;
+  width: 700px;
+  height: auto;
   color: black;
 }
 
@@ -239,10 +276,10 @@ li {
 
 .btMaisMenos {
   background: transparent;
-  border: 0;
+  border: none;
   align-items: center;
   padding: 0 10px;
-  font-weight: bold;
+  font-size: 20px;
   margin: 10px 5px;
 }
 
@@ -255,7 +292,7 @@ li {
   background-color: ccc;
   color: black;
   margin: 10px 5px;
-  width: 220px;
+  width: 150px;
 }
 
 h2 {
@@ -275,14 +312,12 @@ h2 {
 }
 
 .item {
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 16px;
-  padding: 7px 20px;
-  background-color: #595c48;
-  color: aliceblue;
-  margin: 5px;
-  width: 220px;
+  background-color: white;
+  position: relative;
+  width: 100%;
+  margin: 30px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 18px #2a2f430f;
+  justify-content: space-around;
 }
 </style>
