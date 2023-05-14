@@ -1,13 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 // fazer carrinho vazio <3
-const confirmacao = ref(false);
+
+const cores = ref('')
+
 const novoItem = ref({
   id: 0,
   nome: '',
   preco: 0,
   quantidade: 1,
-  valorTotal: 0
+  valorTotal: 0,
+  cor: ''
 })
 
 const produtos = ref([
@@ -16,8 +19,8 @@ const produtos = ref([
     nome: 'Camiseta',
     preco: 49.9,
     quantidade: 0,
-    imagem: "https://images.tcdn.com.br/img/img_prod/275189/camisa_azul_royal_100_poliester_para_sublimacao_g_2703_1_20200722153139.jpg",
-    valorTotal: 0
+    cor: '',
+    imagem: "https://images.tcdn.com.br/img/img_prod/275189/camisa_azul_royal_100_poliester_para_sublimacao_g_2703_1_20200722153139.jpg"
   },
   {
     id: 2,
@@ -86,12 +89,6 @@ const produtos = ref([
 
 const carrinho = ref([])
 
-function total() {
-  for (let i = 0; i < carrinho.length; i++) {
-    const valorTotal = valorTotal[i] + valorTotal
-  }
-}
-
 function diminuir(id) {
   if (produtos.value[id].quantidade > 0) {
     produtos.value[id].quantidade--;
@@ -101,10 +98,12 @@ function diminuir(id) {
 function adicionarCarrinho(index) {
   if (produtos.value[index].quantidade > 0) {
     novoItem.value.id = produtos.value[index].id;
+    novoItem.value.imagem = produtos.value[index].imagem;
     novoItem.value.nome = produtos.value[index].nome;
+    novoItem.value.cor = produtos.value[index].cor;
     novoItem.value.preco = produtos.value[index].preco;
     novoItem.value.quantidade = produtos.value[index].quantidade;
-    novoItem.value.valorTotal = produtos.value[index].quantidade * produtos.value[index].preco; 
+    novoItem.value.valorTotal = produtos.value[index].quantidade * produtos.value[index].preco;
     carrinho.value.push({ ...novoItem.value });
   }
   else {
@@ -116,100 +115,93 @@ function adicionarCarrinho(index) {
 function removerCarrinho(index) {
   carrinho.value.splice(index, 1)
 }
+
 </script>
 <template>
   <ul class="produtos-main">
     <h2>Produtos</h2>
 
-    <div class="descricao" >
+    <div>
       <section>
         <table>
           <thead>
             <tr>
               <th>Produto</th>
               <th>Preço</th>
-              <th>Valor total</th>
+              <th>Total</th>
               <th>Quantidade</th>
             </tr>
           </thead>
           <tbody class="produtos-item" v-for="(produto, index) in produtos" :key="index">
-            <td>{{produto.nome   }}</td>
+            <td>
+              <div class="product">
+                <img :src="produto.imagem" alt="">
+                <div class="info">
+                  <div class="nome">{{ produto.nome }}</div>
+                  <div class="cor">
+                    <input name="cor" type="radio" v-model="cores" value="vermelho" /> Vermelho
+                    <input name="cor" type="radio" v-model="cores" value="verde" /> Verde
+                    <input name="cor" type="radio" v-model="cores" value="azul" /> Azul
+                  </div>
+                </div>
+              </div>
+            </td>
             <td>{{ produto.preco }}</td>
             <td>{{ (produto.quantidade * produto.preco).toFixed(2) }}</td>
-            <td>{{ produto.quantidade }}</td>
-            <td></td>
+            <td>
+              <div class="bt">
+                <button class="btMaisMenos" @click="produto.quantidade++">+</button>
+                <p>{{ produto.quantidade }}</p>
+                <button class="btMaisMenos" @click="diminuir(produto.id - 1)">-</button>
+              </div>
+            </td>
+            <td><button class="btCarrinho" @click="adicionarCarrinho(index)">Adicionar</button></td>
           </tbody>
         </table>
       </section>
-
-
     </div>
-
-    <li class="produtos-item" v-for="(produto, index) in produtos" :key="index">
-      <div>
-        <img :src="produto.imagem" alt="">
-      </div>
-      <div>
-        <p>{{ produto.nome }}</p>
-      </div>
-      <div>
-        <p>R$:{{ produto.preco }}</p>
-      </div>
-      <div>
-        <p>{{ (produto.quantidade * produto.preco).toFixed(2) }}</p>
-      </div>
-      <p v-for="(produto, index) in produtos" :key="index">{{ produto.index }}</p>
-      <div class="bt">
-        <button class="btMaisMenos" @click="produto.quantidade++">+</button>
-        <p>{{ produto.quantidade }}</p>
-        <button class="btMaisMenos" @click="diminuir(produto.id - 1)">-</button>
-      </div>
-      <div>
-        <button class="btCarrinho" @click="adicionarCarrinho(index)">Adicionar</button>
-      </div>
-    </li>
   </ul>
 
-  <ul class="carrinho">
+  <div class="carrinho">
     <h2>Carrinho</h2>
 
-    <div class="descricao">
+    <div>
       <section>
         <table>
           <thead>
             <tr>
               <th>Produto</th>
               <th>Preço</th>
-              <th>Valor total</th>
+              <th>Total</th>
               <th>Quantidade</th>
+              <th></th>
             </tr>
           </thead>
+          <tbody class="produtos-item" v-for="(produto, index) in carrinho" :key="index">
+            <td>
+              <div class="product">
+                <img :src="produto.imagem" alt="">
+                <div class="info">
+                  <div class="nome">{{ produto.nome }}</div>
+                  <div class="cor">
+                    <input type="radio" v-model="cores" value="vermelho" /> Vermelho
+                    <input type="radio" v-model="cores" value="verde" /> Verde
+                    <input type="radio" v-model="cores" value="azul" /> Azul
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="centralizarPro">{{ produto.preco }}</td>
+            <td>{{ (produto.quantidade * produto.preco).toFixed(2) }}</td>
+            <td class="centralizarPro">{{ produto.quantidade }}</td>
+            <td class="centralizarPro"> <button class="btCarrinho" @click="removerCarrinho(index)">Remover</button></td>
+          </tbody>
         </table>
       </section>
     </div>
+  </div>
 
-    <li class="item" v-for="(produto, index) in carrinho" :key="index">
-      <div>
-        <img src=produto.imagem alt="">
-      </div>
-      <div>
-        <p> {{ produto.nome }}</p>
-      </div>
-      <div>
-        <p> R$:{{ produto.preco }}</p>
-      </div>
-      <div>
-        <p>R$:{{ produto.valorTotal }}</p>
-      </div>
-      <div>
-        <p>{{ produto.quantidade }}</p>
-      </div>
-      <p v-for="(produto, index) in produtos" :key="index">{{ produto.index }}</p>
-      <div>
-        <button class="btCarrinho" @click="removerCarrinho(index)">Remover</button>
-      </div>
-    </li>
-  </ul>
+
 </template>
 <style scoped>
 img {
@@ -237,7 +229,7 @@ img {
   padding: 80px;
   border-radius: 15px;
   box-shadow: 0px 10px 40px #00000056;
-  width: 700px;
+  width: 900px;
   height: auto;
   color: black;
 }
@@ -304,7 +296,8 @@ h2 {
   font-size: 40px;
 }
 
-.produtos-main .produtos-item {
+.produtos-main .produtos-item,
+td {
   background-color: white;
   position: relative;
   width: 100%;
@@ -326,6 +319,36 @@ h2 {
   align-items: center;
 }
 
-.descricao {
+/* tabela */
+
+table {
+  border-collapse: separate;
+  border-spacing: 0 30px;
+  margin-top: -8px;
+}
+
+th {
+  text-align: left;
+  padding-bottom: 16px;
+  text-transform: uppercase;
+  color: #666;
+}
+
+tr {
+  border-bottom: 3px solid #eee;
+}
+
+.nome {
+  align-items: center;
+  display: flex;
+}
+
+.product {
+  display: flex;
+  align-items: center;
+}
+
+.centralizarPro {
+  align-items: center;
 }
 </style>
